@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+option go_package = "/go-fruit-cart;go_fruit_cart";
+
+service FruitCartManagementService {
+    rpc GetUser (UserCredential) returns (UserDetails);
+    rpc GetProduct (ProductCredential) returns (ProductDetails);
+    rpc GetTotalCartAmount (UserCredential) returns (TotalCartAmount);
+    
+    rpc GetUsers (Empty) returns (AllUsers);
+}
+
+message UserCredential {
+    string email = 1 ;
+}
+
+message UserDetails {
+    string firsname = 1;
+    string lastname = 2;
+    string email = 3;
+    string cartid = 4;
+}
+
+ message ProductCredential {
+    string productid = 1;
+}
+
+message ProductDetails {
+    string productname = 1;
+    string productdescription = 2;
+    double productamount = 3;
+    string productimage = 4;
+}
+
+message TotalCartAmount {
+    int64 totalamount = 1;
+}
+
+message Empty {
+
+}
+
+message AllUsers {
+    repeated UserDetails users = 1;
+} 

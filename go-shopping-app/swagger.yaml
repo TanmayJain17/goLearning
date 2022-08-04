@@ -1,0 +1,625 @@
+swagger: "2.0"
+
+info:
+
+    description: "Fruit Seller"
+
+    version: "1.0.0"
+
+    title: "Fruit Seller"
+
+host: "localhost:8000"
+
+basePath: "/"
+
+tags:
+
+    - name: "user"
+
+      description: "User related operations like signup and login"
+
+    - name: "product"
+
+      description: "Product related operations like add, delete, update and getAll products"
+
+    - name: "cart"
+
+      description: "Cart related operations like get, addTo, removeFrom cart"
+
+
+schemes:
+
+    - "http"
+
+securityDefinitions:
+
+    APIKeyHeader:
+     type: apiKey
+     in: header
+     name: Authorization
+
+paths:
+
+    /login:
+
+        post:
+
+            tags:
+
+                - "user"
+
+            summary: "User Login"
+
+            consumes:
+
+                - "application/json"
+
+            produces:
+
+                - "application/json"
+
+            parameters:
+
+                - in: "body"
+
+                  name: "body"
+
+                  description: "User Credentials"
+
+                  required: true
+
+                  schema:
+
+                      $ref: "#/definitions/Login"
+
+            responses:
+
+                "200":
+
+                    description: "Login successful"
+
+                    schema:
+
+                        $ref: "#/definitions/LoginResponse"
+
+                "401":
+
+                    description: "Unauthorized"
+
+                "500":
+
+                    description: "Internal Server Error"
+
+    /signup:
+
+        post:
+
+            tags:
+
+                - "user"
+
+            summary: "New User Sign Up"
+
+            consumes:
+
+                - "application/json"
+
+            produces:
+
+                - "application/json"
+
+            parameters:
+
+                - in: "body"
+
+                  name: "body"
+
+                  description: "User Credentials"
+
+                  required: true
+
+                  schema:
+
+                      $ref: "#/definitions/Register"
+
+            responses:
+
+                "200":
+
+                    description: "SignUp Successfull"
+
+                "400":
+
+                    description: "Bad Request"
+
+
+                "500":
+
+                    description: "Internal Server Error"
+
+    /auth/cart:
+
+        get:
+
+            security:
+
+                - APIKeyHeader: []
+
+            tags:
+
+                - "cart"
+
+            summary: "Get cart"
+
+            produces:
+
+                - "application/json"
+
+            responses:
+
+                "200":
+
+                    description: "View cart successful"
+
+                    schema:
+                        type: "array"
+                        items:
+                         $ref: "#/definitions/CartProduct"
+
+                "401":
+
+                    description: "Unauthorized"
+
+                "500":
+
+                    description: "Internal Server Error"
+
+    /auth/products/{productid}/cart:
+
+        put:
+
+            security:
+
+                - APIKeyHeader: []
+
+            tags:
+
+                - "cart"
+
+            summary: "Add products to cart"
+
+            
+
+            produces:
+
+                - "application/json"
+
+            parameters:
+
+                - in: "path"
+
+                  name: "productid"
+
+                  description: "Product Id"
+
+                  required: true
+
+                  type: string
+
+                      
+
+
+            responses:
+
+                "200":
+
+                    description: "Added to cart successfully"
+
+                "400":
+
+                    description: "Bad Request"
+
+                "401":
+
+                    description: "Unauthorized"
+
+                "500":
+
+                    description: "Internal Server Error"
+        delete:
+
+            security:
+
+                - APIKeyHeader: []
+
+            tags:
+
+                - "cart"
+
+            summary: "Add products to cart"
+
+            
+
+            produces:
+
+                - "application/json"
+
+            parameters:
+
+                - in: "path"
+
+                  name: "productid"
+
+                  description: "Product Id"
+
+                  required: true
+
+                  type: string
+
+            responses:
+
+                "200":
+
+                    description: "Removed from cart successfully"
+
+                "400":
+
+                    description: "Bad Request"
+
+                "401":
+
+                    description: "Unauthorized"
+
+                "500":
+
+                    description: "Internal Server Error"
+
+
+    /auth/product:
+
+        post:
+
+            security:
+
+                - APIKeyHeader: []
+
+            tags:
+
+                - "product"
+
+            summary: "Add a new product"
+
+            consumes:
+
+                - "application/json"
+
+            produces:
+
+                - "application/json"
+
+            parameters:
+
+                - in: "body"
+
+                  name: "body"
+
+                  description: "Product to be added"
+
+                  required: true
+
+                  schema:
+
+                      $ref: "#/definitions/Product"
+
+            responses:
+
+                "200":
+
+                    description: "Added product successfully"
+
+                "400":
+
+                    description: "Bad Request"
+
+                "401":
+
+                    description: "Unauthorized"
+
+                "500":
+
+                    description: "Internal Server Error"
+
+    /auth/product/{id}:
+
+        put:
+
+            security:
+
+                - APIKeyHeader: []
+
+            tags:
+
+                - "product"
+
+            summary: "Update a product"
+
+            consumes:
+
+                - "application/json"
+
+            produces:
+
+                - "application/json"
+
+            parameters:
+
+                - in: "body"
+
+                  name: "body"
+
+                  description: "Product to be edited"
+
+                  required: true
+
+                  schema:
+
+                      $ref: "#/definitions/Product"
+
+
+                - name: "id"
+
+                  in: "path"
+
+                  description: "product that needs to be updated"
+
+                  required: true
+
+                  type: "string"
+                
+
+            responses:
+
+                "200":
+
+                    description: "Edited product successfully"
+
+                "400":
+
+                    description: "Bad Request"
+
+                "401":
+
+                    description: "Unauthorized"
+
+                "500":
+
+                    description: "Internal Server Error"
+
+        delete:
+
+            security:
+
+                - APIKeyHeader: []
+
+            tags:
+
+                - "product"
+
+            summary: "Delete a product"
+
+           
+
+            produces:
+
+                - "application/json"
+
+            parameters:
+
+                - name: "id"
+
+                  in: "path"
+
+                  description: "product that needs to be updated"
+
+                  required: true
+
+                  type: "string"
+
+            responses:
+
+                "200":
+
+                    description: "Deleted product successfully"
+
+                "400":
+
+                    description: "Bad Request"
+
+                "401":
+
+                    description: "Unauthorized"
+
+                "500":
+
+                    description: "Internal Server Error"
+
+        
+
+    /products:
+
+        get:
+
+            tags:
+
+                - "product"
+
+            summary: "View All Products"
+
+            produces:
+
+                - "application/json"
+
+            responses:
+
+                "200":
+
+                    description: "View product successful"
+
+                    schema:
+                        type: "array"
+                        items:
+                         $ref: "#/definitions/Product"
+
+                "500":
+
+                    description: "Internal Server Error"
+
+
+definitions:
+
+    Login:
+
+        type: object
+
+        properties:
+
+            email:
+
+                type: string
+
+                format: email
+
+                description: "User email"
+
+            password:
+
+                type: string
+
+                format: password
+
+                description: "User password"
+
+    LoginResponse:
+
+        type: object
+
+        properties:
+          message:
+            type: string
+
+    Register:
+
+        type: object
+
+        properties:
+
+            email:
+
+                type: string
+
+                format: email
+
+                description: "User email"
+
+            password:
+
+                type: string
+
+                minLength: 3
+
+                format: password
+
+                description: "User password"
+
+            firstName:
+
+                type: string
+
+                minLength: 1
+
+                pattern: "/^[A-Za-z]+$/"
+
+                description: "User first name"
+
+            lastName:
+
+                type: string
+
+                minLength: 1
+
+                pattern: "/^[A-Za-z]+$/"
+
+                description: "User last name"
+
+   
+
+       
+
+    CartProduct:
+
+        type: object
+
+        properties:
+            name:
+
+                type: string
+
+                minLength: 1
+
+                description: "Product name"
+
+            price:
+
+                type: number
+
+                minimum: 0
+
+                description: "Product price"
+
+
+            quantity:
+
+                type: integer
+
+                minimum: 1
+
+                
+
+                description: "Product quantity"
+
+            productId:
+
+                type: string
+
+                format: uuid
+
+                description: "Product id"
+
+    Product:
+
+        type: object
+
+        properties:
+            
+            name:
+
+                type: string
+
+                minLength: 1
+
+                description: "Product name"
+            price:
+
+                type: number
+
+                minimum: 0
+
+                description: "Product price"
+
+            description:
+
+                type: string
+
+                minLength: 1
+
+                description: "Product description"
